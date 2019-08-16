@@ -1,0 +1,26 @@
+version: '3'
+services:
+  api:
+    build: ./nodejs
+    restart: always
+    volumes:
+      - './api:/app'
+    tty: true
+    networks:
+      - lognet
+  nginx:
+    image: nginx
+    restart: always
+    tty: true
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - './app/dist:/var/www'
+      - './nginx:/etc/nginx/conf.d'
+      - './.docker_data/nginx/logs:/var/log/nginx'
+    networks:
+      - lognet
+networks:
+  lognet:
+    driver: bridge
