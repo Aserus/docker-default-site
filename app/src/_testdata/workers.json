@@ -1,0 +1,10 @@
+[
+	{
+		"id": 1,
+		"first_name": "Иван",
+		"second_name": "Иванов",
+		"middle_name": "Иванович",
+		"phone": "+7 495 449 01 01",
+		"email": "ivan@test.loc"
+	}
+]

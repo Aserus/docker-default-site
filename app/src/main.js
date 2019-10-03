@@ -11,15 +11,19 @@ import '@/configs/setup-components'
 
 
 import vuetify from '@/plugins/vuetify'
+import i18n from '@/plugins/i18n'
+
 import '@/plugins/cookie'
 
 
 
 
+
 new Vue({
-	el: '#app',
-	store,
-	router,
-	vuetify,
-	render: r => r(App)
+    el: '#app',
+    store,
+    router,
+    vuetify,
+    i18n,
+    render: r => r(App)
 })

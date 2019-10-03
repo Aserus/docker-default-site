@@ -9,6 +9,7 @@ v-app#inspire
 			v-toolbar-title Application
 
 	v-content
+		v-breadcrumbs(:items="$route.meta.breadcrumbs" divider=">")
 		router-view
 
 	template(v-if="!$route.meta.allowAnonimus")
@@ -30,7 +31,7 @@ import TheFooter from '@comp/TheFooter.vue'
 export default {
 	name: 'App',
 	data: () => ({
-		drawer: false,
+		drawer: true,
 		clipped: true
 	}),
 	components:{

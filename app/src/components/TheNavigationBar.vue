@@ -1,16 +1,23 @@
 <template lang="pug">
 v-navigation-drawer(v-model="drawer" app :clipped="clipped")
-	v-list(dense)
-		v-list-item(@click)
-			v-list-item-action
-				v-icon mdi-home
-			v-list-item-content
-				v-list-item-title Home
-		v-list-item(@click)
-			v-list-item-action
-				v-icon mdi-contact-mail
-			v-list-item-content
-				v-list-item-title Contact
+	v-list-item-group
+
+		v-list(dense subheader)
+			v-subheader Институт аэронавигации
+			navigation-bar-item(icon="mdi-home-city" to="/ia/subdivisions") Филиалы
+			navigation-bar-item(icon="mdi-account-group" to="/ia/groups") Отделы
+			navigation-bar-item(icon="mdi-account" to="/ia/workers") Струдники
+			navigation-bar-item(icon="mdi-script-text" to="/ia/programs") Программы
+			navigation-bar-item(icon="mdi-text-subject" to="/ia/disciplines") Дисциплины
+
+
+		v-list(dense subheader)
+			v-subheader Госкорпорация
+			navigation-bar-item(icon="mdi-home-city" to="/gos/subdivisions") Филиалы
+			navigation-bar-item(icon="mdi-airport" to="/gos/airplanes") Центры
+			navigation-bar-item(icon="mdi-briefcase-account" to="/gos/posts") Должности
+
+
 
 	div
 </template>
@@ -18,6 +25,8 @@ v-navigation-drawer(v-model="drawer" app :clipped="clipped")
 
 
 <script>
+import NavigationBarItem from './NavigationBarItem.vue'
+
 
 export default {
 	props:{
@@ -29,6 +38,9 @@ export default {
 			get(){	return this.value	},
 			set(v){	this.$emit('input',v)	}
 		}
+	},
+	components:{
+		NavigationBarItem
 	}
 }
 </script>
