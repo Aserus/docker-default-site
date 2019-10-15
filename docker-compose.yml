@@ -1,5 +1,18 @@
 version: '3'
 services:
+  db:
+    image: 'mariadb:10.2'
+    restart: always
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - '3306:3306'
+    volumes:
+      - './sql:/docker-entrypoint-initdb.d'
+      - './.docker_data/db:/var/lib/mysql'
+    networks:
+      - lognet
+    env_file:
+      - ./variables/db.env
   api:
     build: ./nodejs
     restart: always
@@ -8,6 +21,8 @@ services:
     tty: true
     networks:
       - lognet
+    env_file:
+      - ./variables/db.env
   nginx:
     image: nginx
     restart: always

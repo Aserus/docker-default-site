@@ -1,0 +1,150 @@
+import JSWorker from './worker.mjs'
+import JSWorkerEducation from './worker_education.mjs'
+import JSWorkerRetraining from './worker_retraining.mjs'
+import JSWorkerEnglish from './worker_english.mjs'
+
+/*
+import {promises as fs} from 'fs'
+import path from 'path'
+import xml2js from 'xml2js'
+import axios from 'axios'
+*/
+
+
+const belongsTo = (cl1,cl2,k)	=>	cl1.belongsTo(cl2, {as: k,foreignKey: k.toLowerCase()+'_id',});
+
+
+
+belongsTo(JSWorkerRetraining,	JSWorker,'Worker');
+belongsTo(JSWorkerEducation,	JSWorker,'Worker');
+belongsTo(JSWorkerEnglish,	JSWorker,'Worker');
+
+
+
+JSWorkerRetraining.addScope('worker',{
+	include: [
+		{ association: 'Worker', required: false},
+	]
+});
+
+JSWorkerEducation.addScope('worker',{
+	include: [
+		{ association: 'Worker', required: false},
+	]
+});
+
+JSWorkerEnglish.addScope('worker',{
+	include: [
+		{ association: 'Worker', required: false},
+	]
+});
+
+
+
+const models = {
+	JSWorker,
+	JSWorkerEducation,
+	JSWorkerRetraining,
+	JSWorkerEnglish,
+}
+
+
+
+export {
+	JSWorker,
+	JSWorkerEducation,
+	JSWorkerRetraining,
+	JSWorkerEnglish
+
+}
+
+export default models
+
+/*
+
+async function getRemoteAssoc(type){
+	const { data } = await axios.get('https://handbook.aeronav.aero/api/gos/'+type)
+	//console.log(data.list)
+	const assoc = {}
+	data.list.forEach(item => {
+		assoc[item.goscode] = item
+	})
+	return assoc;
+}
+
+
+
+
+
+async function updateOrCreate(model,data,keys){
+	const where = {}
+
+	keys.forEach(k => {
+		where[k] = data[k]
+	})
+
+	const item = await model.findOne({ where })
+	if(!item){
+		await model.create(data)
+	}else{
+		await item.update(data)
+	}
+}
+
+async function test(){
+	//const filePath = path.join(process.cwd(),'models/_testdata/employeesold.json')
+	//const strOrig = await fs.readFile(filePath,'utf8')
+	const filePath = path.join(process.cwd(),'models/_testdata/employees.xml')
+	const xmlStr = await fs.readFile(filePath,'utf8')
+
+
+	var parser = new xml2js.Parser();
+
+	await JSWorkerEnglish.sync()
+	try{
+		const data = await parser.parseStringPromise(xmlStr)
+
+		const list = data['s:employees']['s:employee']
+		const listArr = Object.values(list)
+		for(let item of listArr){
+			//console.log(item)
+
+			const worker_id = item['$'].id
+			let eng = item['s:english']
+			if(!eng) continue;
+			eng = eng[0]
+			console.log(eng)
+			const engParams = eng['$']
+
+
+
+			await updateOrCreate(JSWorkerEnglish,{
+				worker_id,
+				certNo: engParams.certNo,
+				certDate: engParams.certDate,
+				icaoLevel: engParams.icaoLevel,
+				testText: engParams.testName,
+				testerText: eng['s:tester'][0],
+			},['worker_id'])
+
+
+
+			//console.log(job)
+			//break
+		}
+		console.log('--> END')
+		//Object.values(list).forEach(item =>)
+
+		//console.log(list[0])
+	}catch(err){
+		console.log(err)
+	}
+
+}
+
+
+test().catch(err=>{
+	console.log(err)
+})
+
+*/

@@ -1,5 +1,9 @@
 //import createError from 'http-errors'
 
+
+import models from "@models/index.mjs";
+//console.log(models)
+
 export default async (fastify) => {
 
 	///////////////////////////////

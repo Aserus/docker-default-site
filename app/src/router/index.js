@@ -5,15 +5,10 @@ import VueRouter from 'vue-router'
 import Default  from  '@pages/Default.vue'
 import NotFound from '@pages/NotFound.vue'
 import Signin from '@pages/Signin.vue'
-import IaSubdivisionList from '@pages/IaSubdivisionList.vue'
-import IaWorkerList from '@pages/IaWorkerList.vue'
-import IaGroupList from '@pages/IaGroupList.vue'
-import IaDisciplineList from '@pages/IaDisciplineList.vue'
-import IaProgramList from '@pages/IaProgramList.vue'
 
-import GosAirplaneList from '@pages/GosAirplaneList.vue'
-import GosSubdivisionList from '@pages/GosSubdivisionList.vue'
-import GosPostList from '@pages/GosPostList.vue'
+import RetrainingList from '@pages/RetrainingList.vue'
+import EnglishList from '@pages/EnglishList.vue'
+import EducationList from '@pages/EducationList.vue'
 
 
 
@@ -27,29 +22,46 @@ const router = new VueRouter({
 	routes:[
 		{ path:'/', component: Default },
 		{ path:'/signin', component: Signin, meta: { allowAnonimus: true } },
-		{ path:'/ia/subdivisions', component: IaSubdivisionList },
-		{ path:'/ia/groups', component: IaGroupList },
-		{ path:'/ia/workers', component: IaWorkerList },
-		{ path:'/ia/programs', component: IaProgramList },
-		{ path:'/ia/disciplines', component: IaDisciplineList },
+		{ path:'/retrainings',
+			component: RetrainingList,
+			meta: {
+				breadcrumbs: [
+					{
+						text: 'Институт аэронавигации'
+					},
+					{
+						text: 'Кпк'
+					}
+				]
+			}
+		},
+		{ path:'/englishes',
+			component: EnglishList,
+			meta: {
+				breadcrumbs: [
+					{
+						text: 'Институт аэронавигации'
+					},
+					{
+						text: 'Уровень анг. яз.'
+					}
+				]
+			}
+		},
+		{ path:'/educations',
+			component: EducationList,
+			meta: {
+				breadcrumbs: [
+					{
+						text: 'Институт аэронавигации'
+					},
+					{
+						text: 'Образование'
+					}
+				]
+			}
+		},
 
-		{ path:'/gos/subdivisions', component: GosSubdivisionList },
-		{ path:'/gos/airplanes', component: GosAirplaneList },
-		{
-			path:'/gos/posts',
-			component: GosPostList,
-				meta: {
-					breadcrumbs: [
-						{
-							text: 'Госкорпорация'
-						},
-						{
-							text: 'Должности'
-						}
-					]
-				}
-
-			},
 
 		{ path: '*', component: NotFound }
 	]

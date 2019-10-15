@@ -1,0 +1,150 @@
+import JSWorker from './worker.mjs'
+import JSWorkerEducation from './worker_education.mjs'
+import JSWorkerRetraining from './worker_retraining.mjs'
+
+import {promises as fs} from 'fs'
+import path from 'path'
+import xml2js from 'xml2js'
+
+const models = {
+	JSWorker,
+	JSWorkerEducation,
+}
+
+/*
+Object.values(models).forEach((model)=>{
+	console.log(model)
+	model.sync().then(()=>{
+		console.log('sync')
+	}).catch(console.log)
+})
+*/
+
+export {
+	JSWorker,
+	JSWorkerEducation,
+
+}
+
+export default models
+
+
+
+/*
+function specCurrent(str){
+	let out =  str;
+	let reg = new RegExp("\\\\",'g');
+	out = out.replace(reg,'\\\\')
+
+	out = out.replace(new RegExp("\n\'",'g'),"'")
+	out = out.replace(new RegExp('"','g'),'\\"')
+	out = out.replace(new RegExp("'",'g'),'"')
+	//out = out.replace(new RegExp("\\¶",'g'),'')
+	return out
+}
+*/
+
+
+async function updateOrCreate(model,data,keys){
+	const where = {}
+
+	keys.forEach(k => {
+		where[k] = data[k]
+	})
+
+	const item = await model.findOne({ where })
+	if(!item){
+		await model.create(data)
+	}else{
+		await item.update(data)
+	}
+}
+
+async function test(){
+	//const filePath = path.join(process.cwd(),'models/_testdata/employeesold.json')
+	//const strOrig = await fs.readFile(filePath,'utf8')
+	const filePath = path.join(process.cwd(),'models/_testdata/employees.xml')
+	const xmlStr = await fs.readFile(filePath,'utf8')
+
+
+	var parser = new xml2js.Parser(/* options */);
+
+	//const str = specCurrent(strOrig)
+	await JSWorkerEducation.sync()
+	await JSWorkerRetraining.sync()
+	try{
+		const data = await parser.parseStringPromise(xmlStr)
+
+		const list = data['s:employees']['s:employee']
+		const listArr = Object.values(list)
+		for(let item of listArr){
+			//console.log(item)
+
+			const worker_id = item['$'].id
+			const education = item['s:education']
+			const retraining = item['s:retraining']
+
+
+
+			for(let ed of education){
+				const level = ed['$'].level;
+				const diplom = ed['s:diploma']
+				const institution = ed['s:college'][0]
+				const diplomInfo = diplom[0]['$']
+				//console.log('diplomInfo',diplomInfo)
+				const { number, date } = diplomInfo
+				//console.log(number)
+				//console.log(date)
+
+				//console.log(ed)
+				//console.log(college[0])
+				await updateOrCreate(JSWorkerEducation,{
+					level,
+					diplomNo: number,
+					diplomDate: date,
+					institution,
+					worker_id,
+				},['diplomNo','diplomDate','worker_id'])
+
+
+			}
+
+			if(retraining){
+				for(let tr of retraining){
+					const diplom = tr['s:diploma']
+					const diplomInfo = diplom[0]['$']
+					const { number, date } = diplomInfo
+					//console.log('diplomInfo',diplomInfo)
+					console.log('college',tr['s:college'])
+					console.log('course',tr['s:course'])
+					const institution = tr['s:college'][0]
+
+					const course = tr['s:course'][0]
+
+					await updateOrCreate(JSWorkerRetraining,{
+						diplomNo: number,
+						diplomDate: date,
+						institution,
+						course,
+						worker_id,
+					},['diplomNo','diplomDate','worker_id'])
+
+				}
+			}
+
+
+			//break
+		}
+		console.log('1')
+		//Object.values(list).forEach(item =>)
+
+		//console.log(list[0])
+	}catch(err){
+		console.log(err)
+	}
+
+}
+
+test().catch(err=>{
+	console.log(err)
+})
