@@ -1,5 +1,5 @@
 <template lang="pug">
-v-list-item(:to="to")
+v-list-item(:to="to" @click="clickItem")
 	v-list-item-action
 		v-icon {{icon}}
 	v-list-item-content
@@ -16,6 +16,11 @@ export default {
 		to:String,
 		//text: String,
 		icon: String
+	},
+	methods:{
+		clickItem(e){
+			this.$emit('click',e)
+		}
 	}
 }
 </script>

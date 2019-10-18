@@ -9,6 +9,7 @@ JSWorkerEnglish.init({
 	certNo: DataTypes.STRING,
 	certDate: DataTypes.DATEONLY,
 	testerText: DataTypes.STRING,
+	tester_id: DataTypes.INTEGER,
 	testText: DataTypes.STRING,
 	icaoLevel: DataTypes.INTEGER,
 	worker_id: DataTypes.INTEGER,

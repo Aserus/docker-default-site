@@ -26,6 +26,12 @@ function listToAssoc(list){
 	return assoc
 }
 
+function listFuncToAssoc(func){
+	return async function(){
+		const list = await func()
+		return listToAssoc(list)
+	}
+}
 
 export async function GosSubdivisionList(){
 	const { data } = await api.get('/gos/subdivisions')
@@ -36,6 +42,10 @@ export async function IaSubdivisionList(){
 	const { data } = await api.get('/ia/subdivisions')
 	return data.list
 }
+export async function IaProgramList(){
+	const { data } = await api.get('/ia/programs')
+	return data.list
+}
 
 export async function GosPostList(){
 	const { data } = await api.get('/gos/posts')
@@ -43,18 +53,13 @@ export async function GosPostList(){
 }
 
 
-export async function GosPostAssoc(){
-	const list = await GosPostList()
-	return listToAssoc(list)
-}
-export async function IaSubdivisionAssoc(){
-	const list = await IaSubdivisionList()
-	return listToAssoc(list)
-}
-export async function GosSubdivisionAssoc(){
-	const list = await GosSubdivisionList()
-	return listToAssoc(list)
-}
+export const GosPostAssoc = listFuncToAssoc(GosPostList)
+export const GosSubdivisionAssoc = listFuncToAssoc(GosSubdivisionList)
+
+export const IaSubdivisionAssoc = listFuncToAssoc(IaSubdivisionList)
+export const IaProgramAssoc = listFuncToAssoc(IaProgramList)
+
+
 
 
 

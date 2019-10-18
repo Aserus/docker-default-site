@@ -30,6 +30,7 @@
     "mysql2": "^1.7.0",
     "nconf": "^0.10.0",
     "pino-pretty": "^3.2.2",
+    "promise-all-properties": "^2.1.6",
     "request-promise-native": "^1.0.7",
     "sequelize": "^5.19.4",
     "xml2js": "^0.4.22"

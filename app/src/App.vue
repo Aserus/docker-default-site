@@ -12,7 +12,7 @@ v-app#inspire
 		v-breadcrumbs(:items="$route.meta.breadcrumbs" divider=">")
 		router-view
 
-	template(v-if="!$route.meta.allowAnonimus")
+	//template(v-if="!$route.meta.allowAnonimus")
 		the-footer
 
 	div

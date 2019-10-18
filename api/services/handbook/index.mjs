@@ -2,7 +2,8 @@
 
 import {
 	IaSubdivisionList,
-	GosPostList
+	GosPostList,
+	IaProgramList
 } from "@helpers/handbook.mjs";
 //console.log(models)
 
@@ -17,6 +18,11 @@ export default async (fastify) => {
 	///////////////////////////////
 	fastify.get('/ia/subdivisions', async (req, res) => {
 		const list = await IaSubdivisionList()
+		return { list }
+	})
+	///////////////////////////////
+	fastify.get('/ia/programs', async (req, res) => {
+		const list = await IaProgramList()
 		return { list }
 	})
 

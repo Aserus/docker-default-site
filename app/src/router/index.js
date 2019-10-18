@@ -9,6 +9,7 @@ import Signin from '@pages/Signin.vue'
 import RetrainingList from '@pages/RetrainingList.vue'
 import EnglishList from '@pages/EnglishList.vue'
 import EducationList from '@pages/EducationList.vue'
+import Worker from '@pages/Worker.vue'
 
 
 
@@ -57,6 +58,19 @@ const router = new VueRouter({
 					},
 					{
 						text: 'Образование'
+					}
+				]
+			}
+		},
+		{ path:'/workers/:ID',
+			component: Worker,
+			meta: {
+				breadcrumbs: [
+					{
+						text: 'Госкорпорация'
+					},
+					{
+						text: 'Сотрудник'
 					}
 				]
 			}
