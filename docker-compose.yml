@@ -23,6 +23,7 @@ services:
       - lognet
     env_file:
       - ./variables/db.env
+      - ./variables/auth.env
   nginx:
     image: nginx
     restart: always

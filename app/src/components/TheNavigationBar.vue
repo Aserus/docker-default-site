@@ -33,8 +33,8 @@ export default {
 	methods:{
 		async clickFreeWorker(){
 			const { data } = await api.get('/workers/free')
-			console.log(data.worker)
-			this.$router.push(`/workers/${data.worker.id}`)
+			console.log(data.id)
+			this.$router.push(`/workers/${data.id}`)
 		}
 	},
 	components:{

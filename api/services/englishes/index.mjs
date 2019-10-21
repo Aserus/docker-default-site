@@ -1,7 +1,6 @@
 //import createError from 'http-errors'
 
 import { JSWorkerEnglish } from "@models/index.mjs";
-//console.log(models)
 
 export default async (fastify) => {
 

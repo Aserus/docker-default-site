@@ -2,14 +2,12 @@ import JSWorker from './worker.mjs'
 import JSWorkerEducation from './worker_education.mjs'
 import JSWorkerRetraining from './worker_retraining.mjs'
 import JSWorkerEnglish from './worker_english.mjs'
+import JSUser from './user.mjs'
 import sequelize from 'sequelize';
 const { Op } = sequelize
 
 
-import {promises as fs} from 'fs'
-import path from 'path'
-import xml2js from 'xml2js'
-import axios from 'axios'
+
 
 
 
@@ -48,6 +46,7 @@ const models = {
 	JSWorkerEducation,
 	JSWorkerRetraining,
 	JSWorkerEnglish,
+	JSUser,
 }
 
 
@@ -57,6 +56,7 @@ export {
 	JSWorkerEducation,
 	JSWorkerRetraining,
 	JSWorkerEnglish,
+	JSUser,
 	Op,
 //	sequelize
 }

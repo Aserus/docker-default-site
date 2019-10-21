@@ -5,7 +5,7 @@ import {
 	GosPostList,
 	IaProgramList
 } from "@helpers/handbook.mjs";
-//console.log(models)
+
 
 
 export default async (fastify) => {

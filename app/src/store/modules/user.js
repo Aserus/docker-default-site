@@ -8,7 +8,7 @@ import { AUTH_LOGOUT } from '@actions/auth'
 const state = { status: '', profile: {} }
 
 const getters = {
-	getProfile: state => state.profile,
+	userProfile: state => state.profile,
 	isProfileLoaded: state => !!state.profile.id,
 	isAdmin: state => ((state.profile && state.profile.role) ? true : false)
 }

@@ -3,7 +3,7 @@ import { USER_REQUEST } from '@actions/user'
 import apiCall from '@helpers/api'
 
 const state = { token: localStorage.getItem('user-token') || '', status: '', hasLoadedOnce: false }
-
+console.log(state)
 const getters = {
 	isAuthenticated: state => !!state.token,
 	authStatus: state => state.status,
@@ -12,6 +12,9 @@ const getters = {
 function setAuthHeader(token){
 	apiCall.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
+
+if(state.token) setAuthHeader(state.token)
+
 
 const actions = {
 	[AUTH_REQUEST]: async ({commit, dispatch}, user) => {

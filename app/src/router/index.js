@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import store from '@/store' // your vuex store
 
 import Default  from  '@pages/Default.vue'
 import NotFound from '@pages/NotFound.vue'
@@ -15,16 +15,32 @@ import Worker from '@pages/Worker.vue'
 
 Vue.use(VueRouter)
 
+const ifNotAuthenticated = (to, from, next) => {
+	if (!store.getters.isAuthenticated) return next()
+	next('/')
+}
 
+const ifAuthenticated = (to, from, next) => {
+	if (store.getters.isAuthenticated) return next()
+	next('/signin')
+}
+
+/*
+function docBeforeEnter(to, from, next){
+	if (!store.getters.isAuthenticated) return next('/signin')
+	next()
+}
+*/
 
 const router = new VueRouter({
 	mode: 'history',
 	//base: __dirname,
 	routes:[
-		{ path:'/', component: Default },
-		{ path:'/signin', component: Signin, meta: { allowAnonimus: true } },
+		{ path:'/', component: Default,beforeEnter: ifAuthenticated,  },
+		{ path:'/signin', component: Signin,beforeEnter: ifNotAuthenticated, meta: { allowAnonimus: true } },
 		{ path:'/retrainings',
 			component: RetrainingList,
+			beforeEnter: ifAuthenticated,
 			meta: {
 				breadcrumbs: [
 					{
@@ -38,6 +54,7 @@ const router = new VueRouter({
 		},
 		{ path:'/englishes',
 			component: EnglishList,
+			beforeEnter: ifAuthenticated,
 			meta: {
 				breadcrumbs: [
 					{
@@ -51,6 +68,7 @@ const router = new VueRouter({
 		},
 		{ path:'/educations',
 			component: EducationList,
+			beforeEnter: ifAuthenticated,
 			meta: {
 				breadcrumbs: [
 					{
@@ -64,6 +82,7 @@ const router = new VueRouter({
 		},
 		{ path:'/workers/:ID',
 			component: Worker,
+			beforeEnter: ifAuthenticated,
 			meta: {
 				breadcrumbs: [
 					{

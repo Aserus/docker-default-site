@@ -190,9 +190,8 @@ export default {
 			this.nextWorker()
 		},
 		async nextWorker(){
-			const { data } = await api.get('/workers/free')
-			console.log(data.worker)
-			this.$router.push(`/workers/${data.worker.id}`)
+			const { data } = await api.get('/workers/next')
+			this.$router.push(`/workers/${data.id}`)
 		}
 	},
 }

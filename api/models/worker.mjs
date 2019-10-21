@@ -28,8 +28,11 @@ JSWorker.findFree = async function(){
 
 	const strQuery = `SELECT wr.worker_id as id FROM worker_retrainings as wr
 		LEFT JOIN workers as w ON w.id = wr.worker_id
+		LEFT JOIN users as u ON u.last_worker_id = wr.id
 		WHERE
-		wr.diplomDate >= '2013-01-01' AND w.processed = 0
+		wr.diplomDate >= '2013-01-01' AND
+		w.processed = 0 AND
+		u.id IS NULL
 		GROUP BY worker_id
 		ORDER BY RAND()
 		LIMIT 1`
@@ -41,6 +44,6 @@ JSWorker.findFree = async function(){
 	const id = results[0][0].id
 	return await JSWorker.findByPk(id)
 }
-JSWorker.findFree().then(console.log)
+
 
 export default JSWorker

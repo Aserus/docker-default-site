@@ -14,7 +14,7 @@ import {
 	GosSubdivisionAssoc,
 	IaSubdivisionAssoc
 } from "@helpers/handbook.mjs";
-//console.log(models)
+
 
 async function promiseObj(obj){
 	const result = await Promise.all(Object.values(obj))
@@ -35,9 +35,27 @@ export default async (fastify) => {
 	})
 
 
-	fastify.get('/workers/free', async (req, res) => {
+	fastify.get('/workers/free',{
+		preValidation: [ fastify.checkFullAccess ],
+	}, async (req, res) => {
+		if(!req.user.last_worker_id){
+			const worker = await JSWorker.findFree()
+			req.user.update({
+				last_worker_id: worker.id
+			})
+		}
+
+		return { id:req.user.last_worker_id }
+	})
+
+	fastify.get('/workers/next',{
+		preValidation: [ fastify.checkFullAccess ],
+	}, async (req, res) => {
 		const worker = await JSWorker.findFree()
-		return { worker }
+		req.user.update({
+			last_worker_id: worker.id
+		})
+		return { id:worker.id }
 	})
 
 	fastify.get('/workers/:ID', async (req, res) => {
@@ -77,7 +95,7 @@ export default async (fastify) => {
 
 		Object.assign(out,result);
 
-		console.log(out.retrainingList)
+
 		if(out.retrainingList && out.retrainingList.length){
 			out.retrainingList = JSON.parse(JSON.stringify(out.retrainingList))
 			out.retrainingList.forEach(item => {
@@ -97,7 +115,9 @@ export default async (fastify) => {
 
 
 
-	fastify.put('/workers/:ID', async (req, res) => {
+	fastify.put('/workers/:ID',{
+		preValidation: [ fastify.checkFullAccess ],
+	}, async (req, res) => {
 		const item = await JSWorker.findByPk(req.params.ID)
 		if(!item) throw createError(404,'Сотрудник не найден')
 

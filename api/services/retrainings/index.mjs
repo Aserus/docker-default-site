@@ -3,7 +3,7 @@ import createError from 'http-errors'
 import { JSWorkerRetraining, Op } from "@models/index.mjs";
 import { GosSubdivisionAssoc,GosPostAssoc } from "@helpers/handbook.mjs";
 
-//console.log(models)
+
 
 export default async (fastify) => {
 
@@ -47,7 +47,6 @@ export default async (fastify) => {
 			}
 
 
-			console.log(search)
 		}
 
 
@@ -119,8 +118,6 @@ export default async (fastify) => {
 			})
 		}
 
-
-		//console.log(req.body)
 
 		await item.update(params)
 
